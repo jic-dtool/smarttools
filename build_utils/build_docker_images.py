@@ -6,7 +6,7 @@ import subprocess
 _HERE = os.path.dirname(__file__)
 DOCKER_DIR = os.path.join(_HERE, "docker")
 
-def main():
+def build_docker_images():
     for docker_subdir in os.listdir(DOCKER_DIR):
         docker_dir = os.path.join(DOCKER_DIR, docker_subdir)
         cmd = [
@@ -18,4 +18,4 @@ def main():
         subprocess.call(cmd)
 
 if __name__ == "__main__":
-    main()
+    build_docker_images()
