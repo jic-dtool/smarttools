@@ -1,11 +1,40 @@
 """smarttoolbase package."""
 
+import argparse
 import subprocess
 import shlex
 
 import dtoolcore
 
 __version__ = "0.1.0"
+
+
+def parse_args():
+    """Return the argparse object."""
+    parser = argparse.ArgumentParser(
+        description="Smart tool argument parsing"
+    )
+    parser.add_argument(
+        "-d",
+        "--input_uri",
+        required=True,
+        help="URI of the input dataset"
+    )
+    parser.add_argument(
+        "-o",
+        "--output_uri",
+        required=True,
+        help="URI of the output proto dataset"
+    )
+    parser.add_argument(
+        "-i",
+        "--identifier",
+        required=True,
+        help="Item identifier"
+    )
+    args = parser.parse_args()
+    return args
+
 
 
 class SmartTool(object):
