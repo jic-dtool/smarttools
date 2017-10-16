@@ -1,11 +1,15 @@
 """Script for building Smart tools."""
 
+import click
+
 import build_utils.build_docker_images
+from build_utils.build_smarttool_image import build_smarttool_image
 
-
-def main():
+@click.command()
+@click.argument('tool_dir')
+def main(tool_dir):
     build_utils.build_docker_images.main()
-
+    build_smarttool_image(tool_dir)
 
 if __name__ == "__main__":
     main()
