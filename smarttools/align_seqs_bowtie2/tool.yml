@@ -1,0 +1,10 @@
+name: align_seqs_bowtie2
+docker_base_image: jicscicomp/ubuntu_smarttool_base
+docker_snippet: >
+  RUN apt-get update && apt-get install -y libtbb2 && rm -rf /var/lib/apt/lists/*
+
+  RUN cd /root && \
+    wget https://github.com/BenLangmead/bowtie2/releases/download/v2.3.2/bowtie2-2.3.2-linux-x86_64.zip && \
+    unzip bowtie2-2.3.2-linux-x86_64.zip && \
+    cp bowtie2-2.3.2/bowtie2* /usr/local/bin/ && \
+    rm -rf bowtie2-2.3.2
