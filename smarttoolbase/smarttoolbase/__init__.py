@@ -1,12 +1,31 @@
 """smarttoolbase package."""
 
+import os
+import shutil
 import argparse
 import subprocess
+import tempfile
 import shlex
+from contextlib import contextmanager
 
 import dtoolcore
 
 __version__ = "0.1.0"
+
+
+TMPDIR_PREFIX = os.path.expanduser(
+    "~/tmp/tmp"
+)
+
+
+@contextmanager
+def temp_working_dir():
+    working_dir = tempfile.mkdtemp(prefix=TMPDIR_PREFIX)
+
+    try:
+        yield working_dir
+    finally:
+        shutil.rmtree(working_dir)
 
 
 def parse_args():
