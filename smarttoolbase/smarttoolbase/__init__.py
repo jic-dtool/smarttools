@@ -73,3 +73,20 @@ class SmartTool(object):
     def run(self, identifier):
         """Run an analysis."""
         subprocess.call(self.command_list(identifier))
+
+
+    def stage_outputs(self, identifier, working_directory):
+        for filename in self.outputs:
+
+            useful_name = self.input_dataset.get_overlay(
+                'useful_name'
+            )[identifier]
+
+            fpath = os.path.join(working_directory, filename)
+            relpath = os.path.join(useful_name, filename)
+            out_id = self.output_proto_dataset.put_item(fpath, relpath)
+            self.output_proto_dataset.add_item_metadata(
+                out_id,
+                'from',
+                "{}/{}".format(self.input_dataset.uri, identifier)
+                )
