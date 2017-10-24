@@ -20,6 +20,4 @@ RUN apt-get install -f -y
 RUN rm -rf /var/lib/apt/lists/* irods-icommands-4.1.10-ubuntu14-x86_64.deb
 RUN pip install --upgrade pip
 RUN pip install "dtool==2.3.0"
-RUN git clone https://github.com/jic-dtool/smarttools /src/smartools && \
-  cd /src/smarttools/smarttoolbase && \
-  python setup.py install
+RUN pip install git+https://github.com/jic-dtool/smarttools#subdirectory=smarttoolbase
