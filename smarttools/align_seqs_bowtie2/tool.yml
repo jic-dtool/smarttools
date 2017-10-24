@@ -8,3 +8,9 @@ docker_snippet: >
     unzip bowtie2-2.3.2-linux-x86_64.zip && \
     cp bowtie2-2.3.2/bowtie2* /usr/local/bin/ && \
     rm -rf bowtie2-2.3.2
+
+  RUN cd /root && \
+    wget https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2 && \
+    tar -xf samtools-1.5.tar.bz2 && \
+    cd samtools-1.5 && \
+    ./configure && make && make install
