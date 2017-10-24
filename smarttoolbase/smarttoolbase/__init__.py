@@ -20,6 +20,7 @@ TMPDIR_PREFIX = os.path.expanduser(
 
 @contextmanager
 def temp_working_dir():
+    dtoolcore.utils.mkdir_parents(TMPDIR_PREFIX)
     working_dir = tempfile.mkdtemp(prefix=TMPDIR_PREFIX)
 
     try:

@@ -1,6 +1,8 @@
 """Run bowtie2."""
 
 import os
+import shlex
+import subprocess
 
 from smarttoolbase import SmartTool, parse_args, temp_working_dir
 
@@ -53,6 +55,12 @@ class AlignSeqsBowtie2(SmartTool):
 
             super(AlignSeqsBowtie2, self).run(identifier)
 
+            for command in self.post_processing:
+                command_as_list = shlex.split(command)
+                subprocess.call(command_as_list, cwd=tmp)
+
+            self.stage_outputs(identifier, tmp)
+
 
 def main():
     args = parse_args()
@@ -60,12 +68,12 @@ def main():
 
     smart_tool.base_command = "bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}"
 
-    smart_tool.base_command_props = {
-        "reference_prefix": "/Users/hartleym/data_repo/a_thaliana_ref_with_indexes/data/A_thaliana_indexes",
-        "forward_read_fpath": "/tmp/input/data/read1.fq",
-        "reverse_read_fpath": "/tmp/input/data/read2.fq",
-        "output_fpath": "/tmp/working/output",
-    }
+    smart_tool.post_processing = [
+        "samtools view -bS OUT.sam -o OUT.bam",
+        "samtools sort OUT.bam -o OUT.sorted.bam"
+    ]
+
+    smart_tool.outputs = ['OUT.sorted.bam']
 
     smart_tool.run(args.identifier)
 
