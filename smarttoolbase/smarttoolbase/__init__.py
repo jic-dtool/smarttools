@@ -64,6 +64,10 @@ class SmartTool(object):
         self.input_dataset = dtoolcore.DataSet.from_uri(input_uri)
         self.output_proto_dataset = dtoolcore.ProtoDataSet.from_uri(output_uri)
 
+        self.working_directory = None
+
+        self.base_command_props = {}
+
     def command_list(self, identifier):
         """Return list representing command to be run."""
         command_string = self.base_command.format(
@@ -71,10 +75,27 @@ class SmartTool(object):
         )
         return shlex.split(command_string)
 
-    def run(self, identifier):
+    def __call__(self, identifier):
         """Run an analysis."""
-        subprocess.call(self.command_list(identifier))
 
+        if self.working_directory is None:
+            raise RuntimeError("run() can only be called within use of the class as a context")
+
+        self.pre_run(identifier)
+
+        subprocess.call(
+            self.command_list(identifier),
+            cwd=self.working_directory
+        )
+
+    def __enter__(self):
+        dtoolcore.utils.mkdir_parents(TMPDIR_PREFIX)
+        self.working_directory = tempfile.mkdtemp(prefix=TMPDIR_PREFIX)
+        return self
+
+    def __exit__(self, type, value, tb):
+        shutil.rmtree(self.working_directory)
+        assert not os.path.isdir(self.working_directory)
 
     def stage_outputs(self, identifier, working_directory):
         for filename in self.outputs:
