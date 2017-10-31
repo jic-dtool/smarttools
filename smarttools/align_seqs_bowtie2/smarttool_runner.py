@@ -1,10 +1,8 @@
 """Run bowtie2."""
 
 import os
-import shlex
-import subprocess
 
-from smarttoolbase import SmartTool, parse_args, temp_working_dir
+from smarttoolbase import SmartTool, parse_args
 
 
 def find_paired_read(dataset, identifier):
@@ -42,40 +40,42 @@ class AlignSeqsBowtie2(SmartTool):
 
         super(AlignSeqsBowtie2, self).__init__(input_uri, output_uri)
 
-        self.base_command_props = { 'reference_prefix': os.environ['BOWTIE2_REFERENCE'] }
+        self.base_command_props = {
+            'reference_prefix': os.environ['BOWTIE2_REFERENCE']
+        }
 
-    def run(self, identifier):
+    def pre_run(self, identifier):
 
-        self.base_command_props['forward_read_fpath'] = self.input_dataset.item_content_abspath(identifier)
-        paired_read_identifier = find_paired_read(self.input_dataset, identifier)
-        self.base_command_props['reverse_read_fpath'] = self.input_dataset.item_content_abspath(paired_read_identifier)
+        self.base_command_props['forward_read_fpath'] = self.input_dataset.item_content_abspath(identifier)  # NOQA
+        paired_read_identifier = find_paired_read(self.input_dataset, identifier)  # NOQA
+        self.base_command_props['reverse_read_fpath'] = self.input_dataset.item_content_abspath(paired_read_identifier)  # NOQA
 
-        with temp_working_dir() as tmp:
-            self.base_command_props['output_fpath'] = os.path.join(tmp, 'OUT.sam')
+#       with temp_working_dir() as tmp:
+#           self.base_command_props['output_fpath'] = os.path.join(tmp, 'OUT.sam')  # NOQA
 
-            super(AlignSeqsBowtie2, self).run(identifier)
+#           super(AlignSeqsBowtie2, self).run(identifier)
 
-            for command in self.post_processing:
-                command_as_list = shlex.split(command)
-                subprocess.call(command_as_list, cwd=tmp)
+#           for command in self.post_processing:
+#               command_as_list = shlex.split(command)
+#               subprocess.call(command_as_list, cwd=tmp)
 
-            self.stage_outputs(identifier, tmp)
+#           self.stage_outputs(identifier, tmp)
 
 
 def main():
     args = parse_args()
-    smart_tool = AlignSeqsBowtie2(args.input_uri, args.output_uri)
+    with AlignSeqsBowtie2(args.input_uri, args.output_uri) as smart_tool:
 
-    smart_tool.base_command = "bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}"
+        smart_tool.base_command = "bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}"  # NOQA
 
-    smart_tool.post_processing = [
-        "samtools view -bS OUT.sam -o OUT.bam",
-        "samtools sort OUT.bam -o OUT.sorted.bam"
-    ]
+        smart_tool.post_processing = [
+            "samtools view -bS OUT.sam -o OUT.bam",
+            "samtools sort OUT.bam -o OUT.sorted.bam"
+        ]
 
-    smart_tool.outputs = ['OUT.sorted.bam']
+        smart_tool.outputs = ['OUT.sorted.bam']
 
-    smart_tool.run(args.identifier)
+        smart_tool(args.identifier)
 
 
 if __name__ == "__main__":
