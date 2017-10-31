@@ -2,7 +2,8 @@
 from smarttoolbase import SmartTool, parse_args
 
 
-BASE_COMMAND = 'head -n 4 {input_fpath}'
+BASE_COMMANDS = ['head -n 4 {input_fpath}']
+OUTPUTS = []
 
 class SimpleExampleTool(SmartTool):
 
@@ -18,7 +19,8 @@ def main():
     args = parse_args()
 
     with SimpleExampleTool(args.input_uri, args.output_uri) as smart_tool:
-        smart_tool.base_command = BASE_COMMAND
+        smart_tool.base_commands = BASE_COMMANDS
+        smart_tool.outputs = OUTPUTS
         smart_tool(args.identifier)
 
 
