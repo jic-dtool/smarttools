@@ -48,16 +48,9 @@ def find_paired_read(dataset, identifier):
 
 class AlignSeqsBowtie2(SmartTool):
 
-    def __init__(self, input_uri, output_uri):
-
-        super(AlignSeqsBowtie2, self).__init__(input_uri, output_uri)
-
-        self.base_command_props = {
-            'reference_prefix': os.environ['BOWTIE2_REFERENCE']
-        }
-
     def pre_run(self, identifier):
 
+        self.base_command_props['reference_prefix'] = os.environ['BOWTIE2_REFERENCE']  # NOQA
         self.base_command_props['forward_read_fpath'] = self.input_dataset.item_content_abspath(identifier)  # NOQA
         paired_read_identifier = find_paired_read(self.input_dataset, identifier)  # NOQA
         self.base_command_props['reverse_read_fpath'] = self.input_dataset.item_content_abspath(paired_read_identifier)  # NOQA
