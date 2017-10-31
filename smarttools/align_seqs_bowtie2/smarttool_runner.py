@@ -2,7 +2,19 @@
 
 import os
 
-from smarttoolbase import SmartTool, parse_args
+from smarttoolbase import SmartTool, Command, parse_args
+
+BASE_COMMANDS = [
+    Command("bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}"),  # NOQA
+    Command("samtools view -bS OUT.sam -o OUT.bam"),
+    Command("samtools sort OUT.bam -o OUT.sorted.bam"),
+    Command("samtools index OUT.sorted.bam OUT.sorted.bai"),
+]
+
+OUTPUTS = [
+    'OUT.sorted.bam',
+    'OUT.sorted.bai',
+]
 
 
 def find_paired_read(dataset, identifier):
@@ -56,17 +68,8 @@ def main():
     args = parse_args()
     with AlignSeqsBowtie2(args.input_uri, args.output_uri) as smart_tool:
 
-        smart_tool.base_commands = [
-            "bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}",  # NOQA
-            "samtools view -bS OUT.sam -o OUT.bam",
-            "samtools sort OUT.bam -o OUT.sorted.bam",
-            "samtools index OUT.sorted.bam OUT.sorted.bai",
-        ]
-
-        smart_tool.outputs = [
-            'OUT.sorted.bam',
-            'OUT.sorted.bai',
-        ]
+        smart_tool.base_commands = BASE_COMMANDS
+        smart_tool.outputs = OUTPUTS
 
         smart_tool(args.identifier)
 
