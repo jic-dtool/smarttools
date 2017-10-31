@@ -67,9 +67,8 @@ def main():
     args = parse_args()
     with AlignSeqsBowtie2(args.input_uri, args.output_uri) as smart_tool:
 
-        smart_tool.base_command = "bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}"  # NOQA
-
-        smart_tool.post_processing = [
+        smart_tool.base_commands = [
+            "bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}",  # NOQA
             "samtools view -bS OUT.sam -o OUT.bam",
             "samtools sort OUT.bam -o OUT.sorted.bam"
         ]
