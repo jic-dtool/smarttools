@@ -49,6 +49,7 @@ class AlignSeqsBowtie2(SmartTool):
         self.base_command_props['forward_read_fpath'] = self.input_dataset.item_content_abspath(identifier)  # NOQA
         paired_read_identifier = find_paired_read(self.input_dataset, identifier)  # NOQA
         self.base_command_props['reverse_read_fpath'] = self.input_dataset.item_content_abspath(paired_read_identifier)  # NOQA
+        self.base_command_props['output_fpath'] = os.path.join(self.working_directory, 'OUT.sam')  # NOQA
 
 #       with temp_working_dir() as tmp:
 #           self.base_command_props['output_fpath'] = os.path.join(tmp, 'OUT.sam')  # NOQA
