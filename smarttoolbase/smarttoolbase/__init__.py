@@ -97,6 +97,9 @@ class SmartTool(object):
         shutil.rmtree(self.working_directory)
         assert not os.path.isdir(self.working_directory)
 
+    def pre_run(self, identifier):
+        raise(NotImplementedError())
+
     def stage_outputs(self, identifier, working_directory):
         for filename in self.outputs:
 

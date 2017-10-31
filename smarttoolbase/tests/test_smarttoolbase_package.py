@@ -41,39 +41,43 @@ def test_functional(tmp_dir_fixture, monkeypatch):  # NOQA
     output_dataset.create()
     output_dataset.put_readme("")
 
-    smart_tool = SmartTool(
+    with  SmartTool(
         input_uri=input_dataset.uri,
         output_uri=output_dataset.uri,
-    )
+    ) as smart_tool:
 
-    assert smart_tool.input_dataset.uri == input_dataset.uri
-    assert smart_tool.output_proto_dataset.uri == output_dataset.uri
+        assert smart_tool.input_dataset.uri == input_dataset.uri
+        assert smart_tool.output_proto_dataset.uri == output_dataset.uri
 
 
-    smart_tool.base_command = "bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}"
+        smart_tool.base_command = "bowtie2 -x {reference_prefix} -1 {forward_read_fpath} -2 {reverse_read_fpath} -S {output_fpath}"
 
-    smart_tool.base_command_props = {
-        "reference_prefix": "/tmp/reference/Athaliana",
-        "forward_read_fpath": "/tmp/input/data/read1.fq",
-        "reverse_read_fpath": "/tmp/input/data/read2.fq",
-        "output_fpath": "/tmp/working/output",
-    }
+        smart_tool.base_command_props = {
+            "reference_prefix": "/tmp/reference/Athaliana",
+            "forward_read_fpath": "/tmp/input/data/read1.fq",
+            "reverse_read_fpath": "/tmp/input/data/read2.fq",
+            "output_fpath": "/tmp/working/output",
+        }
 
-    expected_command_list = [
-        "bowtie2",
-        "-x", "/tmp/reference/Athaliana",
-        "-1", "/tmp/input/data/read1.fq",
-        "-2", "/tmp/input/data/read2.fq",
-        "-S", "/tmp/working/output"
-    ]
+        expected_command_list = [
+            "bowtie2",
+            "-x", "/tmp/reference/Athaliana",
+            "-1", "/tmp/input/data/read1.fq",
+            "-2", "/tmp/input/data/read2.fq",
+            "-S", "/tmp/working/output"
+        ]
 
-    assert smart_tool.command_list("identifier") == expected_command_list
+        assert smart_tool.command_list("identifier") == expected_command_list
 
-    import subprocess
-    subprocess.call = MagicMock()
+        import subprocess
+        subprocess.call = MagicMock()
 
-    smart_tool.run("identifier")
+        smart_tool.pre_run = MagicMock()
 
-    subprocess.call.assert_called_once_with(
-        expected_command_list
-    )
+        smart_tool("identifier")
+
+        subprocess.call.assert_called_once_with(
+            expected_command_list,
+            cwd=smart_tool.working_directory
+        )
+        smart_tool.pre_run.assert_called_once()
