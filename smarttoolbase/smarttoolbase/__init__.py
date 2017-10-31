@@ -78,6 +78,8 @@ class SmartTool(object):
                 cwd=self.working_directory
             )
 
+        self.stage_outputs(identifier)
+
     def __enter__(self):
         dtoolcore.utils.mkdir_parents(TMPDIR_PREFIX)
         self.working_directory = tempfile.mkdtemp(prefix=TMPDIR_PREFIX)
@@ -90,14 +92,14 @@ class SmartTool(object):
     def pre_run(self, identifier):
         raise(NotImplementedError())
 
-    def stage_outputs(self, identifier, working_directory):
+    def stage_outputs(self, identifier):
         for filename in self.outputs:
 
             useful_name = self.input_dataset.get_overlay(
                 'useful_name'
             )[identifier]
 
-            fpath = os.path.join(working_directory, filename)
+            fpath = os.path.join(self.working_directory, filename)
             relpath = os.path.join(useful_name, filename)
             out_id = self.output_proto_dataset.put_item(fpath, relpath)
             self.output_proto_dataset.add_item_metadata(
