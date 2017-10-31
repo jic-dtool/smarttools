@@ -45,6 +45,12 @@ def parse_args():
     return args
 
 
+class Command(object):
+
+    def __init__(self, cmd_string, stdout_fname=None):
+        self.cmd_string = cmd_string
+        self.stdout_fname = stdout_fname
+
 
 class SmartTool(object):
     """Base class for creating a Smart tool."""
@@ -72,11 +78,24 @@ class SmartTool(object):
 
         self.pre_run(identifier)
 
-        for cmd_string in self.base_commands:
-            subprocess.call(
-                self.create_subprocess_input(cmd_string, identifier),
-                cwd=self.working_directory
-            )
+        for cmd in self.base_commands:
+            subprocess_input = self.create_subprocess_input(cmd.cmd_string, identifier)
+            if cmd.stdout_fname is None:
+                subprocess.call(
+                    subprocess_input,
+                    cwd=self.working_directory
+                )
+            else:
+                stdout_fpath = os.path.join(
+                    self.working_directory,
+                    cmd.stdout_fname
+                )
+                stdout = subprocess.check_output(
+                    subprocess_input,
+                    cwd=self.working_directory
+                )
+                with open(stdout_fpath, "w") as fh:
+                    fh.write(stdout)
 
         self.stage_outputs(identifier)
 

@@ -1,9 +1,10 @@
 
-from smarttoolbase import SmartTool, parse_args
+from smarttoolbase import SmartTool, Command, parse_args
 
 
-BASE_COMMANDS = ['head -n 4 {input_fpath}']
-OUTPUTS = []
+BASE_COMMANDS = [
+    Command('head -n 4 {input_fpath}', "stdout.txt")]
+OUTPUTS = ["stdout.txt"]
 
 class SimpleExampleTool(SmartTool):
 
