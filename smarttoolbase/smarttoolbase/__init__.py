@@ -18,17 +18,6 @@ TMPDIR_PREFIX = os.path.expanduser(
 )
 
 
-@contextmanager
-def temp_working_dir():
-    dtoolcore.utils.mkdir_parents(TMPDIR_PREFIX)
-    working_dir = tempfile.mkdtemp(prefix=TMPDIR_PREFIX)
-
-    try:
-        yield working_dir
-    finally:
-        shutil.rmtree(working_dir)
-
-
 def parse_args():
     """Return the argparse object."""
     parser = argparse.ArgumentParser(
