@@ -57,12 +57,12 @@ class SmartTool(object):
 
         self.base_command_props = {}
 
-    def command_list(self, identifier):
+    def create_subprocess_input(self, cmd_string, identifier):
         """Return list representing command to be run."""
-        command_string = self.base_command.format(
+        formatted_cmd_string = cmd_string.format(
             **self.base_command_props
         )
-        return shlex.split(command_string)
+        return shlex.split(formatted_cmd_string)
 
     def __call__(self, identifier):
         """Run an analysis."""
@@ -72,10 +72,11 @@ class SmartTool(object):
 
         self.pre_run(identifier)
 
-        subprocess.call(
-            self.command_list(identifier),
-            cwd=self.working_directory
-        )
+        for cmd_string in self.base_commands:
+            subprocess.call(
+                self.create_subprocess_input(cmd_string, identifier),
+                cwd=self.working_directory
+            )
 
     def __enter__(self):
         dtoolcore.utils.mkdir_parents(TMPDIR_PREFIX)
