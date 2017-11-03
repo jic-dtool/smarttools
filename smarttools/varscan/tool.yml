@@ -1,0 +1,17 @@
+name: varscan
+docker_base_image: jicscicomp/ubuntu_smarttool_base
+docker_snippet: >
+  RUN apt-get update && apt-get install -y default-jre && rm -rf /var/lib/apt/lists/*
+
+  RUN cd /root && \
+    wget https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2 && \
+    tar -xf samtools-1.5.tar.bz2 && \
+    cd samtools-1.5 && \
+    ./configure --without-curses && make && make install
+
+
+  ADD https://github.com/dkoboldt/varscan/releases/download/2.4.2/VarScan.v2.4.2.jar /opt/varscan/VarScan.v2.4.2.jar
+
+  RUN echo '#!/bin/bash\nexec java  -jar /opt/varscan/VarScan.v2.4.2.jar "$@"' > /usr/local/bin/varscan
+
+  RUN chmod +x /usr/local/bin/varscan
