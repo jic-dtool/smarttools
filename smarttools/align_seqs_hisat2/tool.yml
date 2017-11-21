@@ -1,0 +1,16 @@
+name: align_seqs_hisat2
+docker_base_image: jicscicomp/ubuntu_smarttool_base
+docker_snippet: >
+  RUN apt-get update && apt-get install -y libtbb2 && rm -rf /var/lib/apt/lists/*
+
+  RUN cd /root && \
+    wget https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2 && \
+    tar -xf samtools-1.5.tar.bz2 && \
+    cd samtools-1.5 && \
+    ./configure && make && make install
+
+  RUN cd /root && \
+    wget ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/downloads/hisat2-2.1.0-Linux_x86_64.zip && \
+    unzip hisat2-2.1.0-Linux_x86_64.zip && \
+    cp hisat2-2.1.0/hisat2* /usr/local/bin/ && \
+    rm -rf hisat2-2.1.0
