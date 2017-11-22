@@ -1,4 +1,4 @@
-name: stringtie
+name: assemble_transcripts_stringtie
 docker_base_image: jicscicomp/ubuntu_smarttool_base
 docker_snippet: >
   RUN cd /root && \
