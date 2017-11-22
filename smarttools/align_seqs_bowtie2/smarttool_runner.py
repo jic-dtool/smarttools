@@ -18,32 +18,8 @@ OUTPUTS = [
 
 
 def find_paired_read(dataset, identifier):
-
-    illumina_metadata = dataset.get_overlay('illumina_metadata')
-
-    specific_metadata = illumina_metadata[identifier]
-
-    del specific_metadata['read']
-
-    matched_identifiers = []
-
-    # Find all items in the dataset where the illumina metadata matches except
-    # for the read tag
-    for candidate_id in dataset.identifiers:
-        candidate_metadata = illumina_metadata[candidate_id]
-        if candidate_metadata is not None:
-            if all(
-                (candidate_metadata[k] == v)
-                for k, v, in specific_metadata.items()
-            ):
-                matched_identifiers.append(candidate_id)
-
-    # This should be exactly two items
-    assert len(matched_identifiers) == 2
-
-    matched_identifiers.remove(identifier)
-
-    return matched_identifiers[0]
+    pair_id = dataset.get_overlay('pair_id')
+    return pair_id[identifier]
 
 
 class AlignSeqsBowtie2(SmartTool):
