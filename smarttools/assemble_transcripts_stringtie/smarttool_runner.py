@@ -1,4 +1,4 @@
-"""Assemble trabscript using stringtie."""
+"""Assemble transcript using stringtie."""
 
 import os
 
@@ -12,7 +12,8 @@ BASE_COMMANDS = [
 ]
 OUTPUTS = ["stringtie.bam"]
 
-class VarScan(SmartTool):
+
+class StringtieAssembleTranscripts(SmartTool):
 
     def pre_run(self, identifier):
         input_fpath = self.input_dataset.item_content_abspath(identifier)
@@ -27,11 +28,13 @@ class VarScan(SmartTool):
 def main():
     args = parse_args()
 
-    with VarScan(args.input_uri, args.output_uri) as smart_tool:
+    with StringtieAssembleTranscripts(
+        args.input_uri,
+        args.output_uri
+    ) as smart_tool:
         smart_tool.base_commands = BASE_COMMANDS
         smart_tool.outputs = OUTPUTS
         smart_tool(args.identifier)
-
 
 
 if __name__ == '__main__':
