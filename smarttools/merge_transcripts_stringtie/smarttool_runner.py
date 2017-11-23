@@ -1,4 +1,9 @@
-"""Merge transcript using stringtie."""
+"""Merge transcript using stringtie.
+
+This scripts merges all the files in the input dataset give any identifier in
+the input dataset. It is up to the agent calling this script to ensure that
+this smarttool is not called once for every item in the input dataset.
+"""
 
 import os
 
