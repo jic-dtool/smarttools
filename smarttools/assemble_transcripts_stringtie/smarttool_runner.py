@@ -7,10 +7,10 @@ from smarttoolbase import SmartTool, Command, parse_args
 
 BASE_COMMANDS = [
     Command(
-        "stringtie -G {gene_annotation_path} {input_fpath} -o stringtie.bam"
+        "stringtie -G {gene_annotation_path} {input_fpath} -o stringtie.gtf"
     ),
 ]
-OUTPUTS = ["stringtie.bam"]
+OUTPUTS = ["stringtie.gtf"]
 
 
 class StringtieAssembleTranscripts(SmartTool):
