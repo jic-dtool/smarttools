@@ -1,0 +1,12 @@
+name: quality_control_fastqc
+docker_base_image: jicscicomp/ubuntu_smarttool_base
+docker_snippet: >
+  RUN apt-get update && apt-get install -y default-jre && rm -rf /var/lib/apt/lists/*
+
+  RUN cd /root && \
+    wget https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.5.zip && \
+    unzip fastqc_v0.11.5.zip
+
+  RUN chmod +x /root/FastQC/fastqc
+
+  RUN ln -s /root/FastQC/fastqc /usr/local/bin/fastqc
