@@ -1,0 +1,15 @@
+name: trim_seqs_trimmomatic
+docker_base_image: jicscicomp/ubuntu_smarttool_base
+docker_snippet: >
+  RUN apt-get update && apt-get install -y default-jre && rm -rf /var/lib/apt/lists/*
+
+  RUN cd /root && \
+    wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.36.zip && \
+    unzip Trimmomatic-0.36.zip && \
+    mkdir -p /opt/trimmomatic && \
+    cp Trimmomatic-0.36/trimmomatic-0.36.jar /opt/trimmomatic/ && \
+    rm -rf Trimmomatic-0.36
+
+  RUN echo '#!/bin/bash\nexec java  -jar /opt/trimmomatic/trimmomatic-0.36.jar "$@"' > /usr/local/bin/trimmomatic
+
+  RUN chmod +x /usr/local/bin/trimmomatic
