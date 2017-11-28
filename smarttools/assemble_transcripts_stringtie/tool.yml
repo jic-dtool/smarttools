@@ -1,4 +1,5 @@
 name: assemble_transcripts_stringtie
+publication: "https://doi.org/10.1038/nprot.2016.095"
 docker_base_image: jicscicomp/ubuntu_smarttool_base
 docker_snippet: >
   RUN cd /root && \
