@@ -10,6 +10,8 @@ import os
 
 from smarttoolbase import SmartTool, Command, parse_args
 
+from dtoolcore.utils import generate_identifier
+
 BASE_COMMANDS = [
     Command("trimmomatic PE {forward_read_fpath} {reverse_read_fpath} read_1.fq.gz read_2.fq.gz {trimmers}"),  # NOQA
 ]
@@ -35,6 +37,7 @@ class TrimSeqsTrimmomatic(SmartTool):
         self.base_command_props['reverse_read_fpath'] = self.input_dataset.item_content_abspath(paired_read_identifier)  # NOQA
 
     def stage_outputs(self, identifier):
+        identifiers = []
         for filename in self.outputs:
 
             useful_name = self.input_dataset.get_overlay(
@@ -44,6 +47,7 @@ class TrimSeqsTrimmomatic(SmartTool):
             fpath = os.path.join(self.working_directory, filename)
             relpath = os.path.join(useful_name, filename)
             out_id = self.output_proto_dataset.put_item(fpath, relpath)
+            identifiers.append(out_id)
             self.output_proto_dataset.add_item_metadata(
                 out_id,
                 'from',
@@ -63,6 +67,20 @@ class TrimSeqsTrimmomatic(SmartTool):
                     "is_read1",
                     False
                 )
+
+        # Add pair_id overlay.
+        assert len(identifiers) == 2
+        read1_id, read2_id = identifiers
+        self.output_proto_dataset.add_item_metadata(
+            read1_id,
+            "pair_id",
+            generate_identifier(read2_id)
+        )
+        self.output_proto_dataset.add_item_metadata(
+            read2_id,
+            "pair_id",
+            generate_identifier(read1_id)
+        )
 
 def main():
     args = parse_args()
