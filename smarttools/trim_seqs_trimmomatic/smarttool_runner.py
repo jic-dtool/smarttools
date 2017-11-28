@@ -37,7 +37,8 @@ class TrimSeqsTrimmomatic(SmartTool):
         self.base_command_props['reverse_read_fpath'] = self.input_dataset.item_content_abspath(paired_read_identifier)  # NOQA
 
     def stage_outputs(self, identifier):
-        identifiers = []
+        read1_handle = None
+        read2_handle = None
         for filename in self.outputs:
 
             useful_name = self.input_dataset.get_overlay(
@@ -47,7 +48,6 @@ class TrimSeqsTrimmomatic(SmartTool):
             fpath = os.path.join(self.working_directory, filename)
             relpath = os.path.join(useful_name, filename)
             out_id = self.output_proto_dataset.put_item(fpath, relpath)
-            identifiers.append(out_id)
             self.output_proto_dataset.add_item_metadata(
                 out_id,
                 'from',
@@ -61,25 +61,25 @@ class TrimSeqsTrimmomatic(SmartTool):
                     "is_read1",
                     True
                 )
+                read1_handle = out_id
             else:
                 self.output_proto_dataset.add_item_metadata(
                     out_id,
                     "is_read1",
                     False
                 )
+                read2_handle = out_id
 
         # Add pair_id overlay.
-        assert len(identifiers) == 2
-        read1_id, read2_id = identifiers
         self.output_proto_dataset.add_item_metadata(
-            read1_id,
+            read1_handle,
             "pair_id",
-            generate_identifier(read2_id)
+            generate_identifier(read2_handle)
         )
         self.output_proto_dataset.add_item_metadata(
-            read2_id,
+            read2_handle,
             "pair_id",
-            generate_identifier(read1_id)
+            generate_identifier(read1_handle)
         )
 
 def main():
