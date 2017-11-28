@@ -1,4 +1,5 @@
 name: trim_seqs_trimmomatic
+publication: "https://doi.org/10.1093/bioinformatics/btu170"
 docker_base_image: jicscicomp/ubuntu_smarttool_base
 docker_snippet: >
   RUN apt-get update && apt-get install -y default-jre && rm -rf /var/lib/apt/lists/*
@@ -6,9 +7,7 @@ docker_snippet: >
   RUN cd /root && \
     wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.36.zip && \
     unzip Trimmomatic-0.36.zip && \
-    mkdir -p /opt/trimmomatic && \
-    cp Trimmomatic-0.36/trimmomatic-0.36.jar /opt/trimmomatic/ && \
-    rm -rf Trimmomatic-0.36
+    mv Trimmomatic-0.36 /opt/trimmomatic
 
   RUN echo '#!/bin/bash\nexec java  -jar /opt/trimmomatic/trimmomatic-0.36.jar "$@"' > /usr/local/bin/trimmomatic
 
