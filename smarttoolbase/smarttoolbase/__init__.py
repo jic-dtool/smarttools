@@ -112,11 +112,20 @@ class SmartTool(object):
         raise(NotImplementedError())
 
     def stage_outputs(self, identifier):
-        for filename in self.outputs:
+        # Set default useful name to relpath minus file extension.
+        useful_name = self.input_dataset.item_properties(
+            identifier
+        )["relpath"].rsplit(".", 1)[0]
 
+        # Update the useful name if the "useful_name" overlay exists
+        # in the input dataset.
+        if "useful_name" in self.input_dataset.list_overlay_names():
             useful_name = self.input_dataset.get_overlay(
                 'useful_name'
             )[identifier]
+
+        for filename in self.outputs:
+
 
             fpath = os.path.join(self.working_directory, filename)
             relpath = os.path.join(useful_name, filename)
