@@ -10,11 +10,12 @@ Quick start
 Install the dependencies::
 
     pip install -r requirements
+    cd smarttools/smarttoolbase && python setup.py install && cd ../..
 
 Create the file ``analysis.yml`` with the content below::
 
-    input_dataset_uri: example_analysis/data/todo_lists
-    output_dataset_base: example_analysis/output/local_runner
+    input_dataset_uri: runners/example_analysis/data/todo_lists
+    output_dataset_base: /tmp
     local_smarttool_fpath: smarttools/smarttools/simple_example_tool/smarttool_runner.py
 
 Run the analysis::
