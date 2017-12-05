@@ -20,7 +20,7 @@ Create the file ``analysis.yml`` with the content below::
 
 Run the analysis::
 
-    python scripts/local_runner.py analysis.yml
+    python runner/scripts/local_runner.py analysis.yml
 
 Repository overview
 -------------------
