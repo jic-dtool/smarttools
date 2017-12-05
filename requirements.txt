@@ -2,3 +2,4 @@ click
 pyyaml
 dtoolcore
 dtool-irods
+dtool-cli
