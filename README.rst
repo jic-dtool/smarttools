@@ -18,7 +18,7 @@ Create the file ``analysis.yml`` with the content below.
 
     input_dataset_uri: runners/example_analysis/data/todo_lists
     output_dataset_base: /tmp
-    output_dataset_name_suffix: "top_4_things"
+    output_dataset_name_suffix: top_4_things
     local_smarttool_fpath: smarttools/smarttools/simple_example_tool/smarttool_runner.py
 
 Run the analysis::
