@@ -9,7 +9,7 @@ Quick start
 
 Install the dependencies::
 
-    $ pip install -r requirements
+    $ pip install -r requirements.txt
     $ cd smarttools/smarttoolbase && python setup.py install && cd ../..
 
 Create the file ``analysis.yml`` with the content below.
