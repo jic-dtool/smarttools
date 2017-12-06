@@ -12,7 +12,9 @@ Install the dependencies::
     $ pip install -r requirements
     $ cd smarttools/smarttoolbase && python setup.py install && cd ../..
 
-Create the file ``analysis.yml`` with the content below::
+Create the file ``analysis.yml`` with the content below.
+
+.. code-block:: yaml
 
     input_dataset_uri: runners/example_analysis/data/todo_lists
     output_dataset_base: /tmp
