@@ -25,6 +25,7 @@ Below is an example YAML input file for the local smarttool runner.
 
     input_dataset_uri: "data/todo_lists"
     output_dataset_base: "output"
+    output_dataset_name_suffix: "top_4_things"
     local_smarttool_fpath: "scripts/smarttool_runner.py"
 
 Below is an example YAML input file for the SLURM smarttool runner, which
@@ -34,6 +35,7 @@ generates SLURM batch scripts for submitting jobs to the cluster.
 
     input_dataset_uri: "irods:///jic_raw_data/rg-matthew-hartley/910d75a1-46f3-4772-8c9d-608f5a266a7f"
     output_dataset_base: "irods:///jic_overflow/rg-matthew-hartley"
+    output_dataset_name_suffix: "alignments"
     input_overlay_filter: "is_read1"
     slurm_run_template: |
       #!/bin/bash -e

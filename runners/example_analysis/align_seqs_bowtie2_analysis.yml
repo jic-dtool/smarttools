@@ -1,6 +1,7 @@
 input_dataset_uri: "irods:///jic_raw_data/rg-matthew-hartley/910d75a1-46f3-4772-8c9d-608f5a266a7f"
 output_dataset_base: output/slurm_runner
 #output_dataset_base: "irods:///jic_archive"
+output_dataset_name_suffix: alignments
 input_overlay_filter: "is_read1"
 slurm_run_template: |
   #!/bin/bash

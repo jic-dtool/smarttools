@@ -1,3 +1,4 @@
 input_dataset_uri: data/todo_lists
 output_dataset_base: output/local_runner
+output_dataset_name_suffix: top_4_things
 local_smarttool_fpath: ../../smarttools/smarttools/simple_example_tool/smarttool_runner.py

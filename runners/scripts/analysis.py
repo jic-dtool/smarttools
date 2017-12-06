@@ -15,7 +15,7 @@ from dtool_cli.cli import (
 def create_derived_dataset(
     parent_dataset,
     dest_location_uri,
-    name_template
+    name_suffix
 ):
 
     parsed_location_uri = urlparse(dest_location_uri)
@@ -24,7 +24,10 @@ def create_derived_dataset(
     if storage == "":
         storage = "file"
 
-    dest_dataset_name = name_template.format(parent_dataset.name)
+    dest_dataset_name = "{}_{}".format(
+        parent_dataset.name,
+        name_suffix
+    )
 
     admin_metadata = dtoolcore.generate_admin_metadata(dest_dataset_name)
     dest_dataset = dtoolcore.generate_proto_dataset(
@@ -97,7 +100,7 @@ class Analysis(object):
         output_ds = create_derived_dataset(
             self.input_dataset,
             output_uri_base,
-            "{}_alignments"
+            self.config["output_dataset_name_suffix"]
         )
 
         self._output_dataset = output_ds
