@@ -19,7 +19,7 @@ def build_smarttool_image(tool_dir):
     tool_file = os.path.join(tool_dir, 'tool.yml')
     tool_python_url_bits =  [
         'https://raw.githubusercontent.com/',
-        'jic-dtool/smarttools/master/smarttools/',
+        'jic-dtool/smarttools/master/smarttools/smarttools/',
         os.path.basename(tool_dir),
         '/smarttool_runner.py'
     ]
