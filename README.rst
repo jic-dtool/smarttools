@@ -9,8 +9,8 @@ Quick start
 
 Install the dependencies::
 
-    pip install -r requirements
-    cd smarttools/smarttoolbase && python setup.py install && cd ../..
+    $ pip install -r requirements
+    $ cd smarttools/smarttoolbase && python setup.py install && cd ../..
 
 Create the file ``analysis.yml`` with the content below::
 
@@ -21,7 +21,8 @@ Create the file ``analysis.yml`` with the content below::
 
 Run the analysis::
 
-    python runners/scripts/local_runner.py analysis.yml
+    $ python runners/scripts/local_runner.py analysis.yml
+    Created: file:///tmp/todo_lists_top_4_things
 
 Repository overview
 -------------------
