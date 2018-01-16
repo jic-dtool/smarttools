@@ -90,6 +90,16 @@ class SlurmRunner(object):
         with open(master_script_fpath, "w") as fh:
             fh.write(self.master_script)
 
+        # Add README content to the output dataset.
+        readme_content = self.analysis.input_dataset.get_readme_content()
+        readme_content += "\nderived_from_UUID: {}".format(
+            self.analysis.input_dataset.uuid
+        )
+        readme_content += "\nderived_from_URI: '{}'".format(
+            self.analysis.input_dataset.uri
+        )
+        self.analysis.output_dataset.put_readme(readme_content)
+
 
 @click.command()
 @click.argument('analysis_fpath')
