@@ -1,5 +1,5 @@
 click
 pyyaml
-dtoolcore
+dtoolcore>=3.0.0
 dtool-irods
 dtool-cli
