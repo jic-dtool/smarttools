@@ -18,12 +18,6 @@ def create_derived_dataset(
     name_suffix
 ):
 
-    # parsed_location_uri = urlparse(dest_location_uri)
-    # prefix = parsed_location_uri.path
-    # storage = parsed_location_uri.scheme
-    # if storage == "":
-    #     storage = "file"
-
     dest_dataset_name = "{}_{}".format(
         parent_dataset.name,
         name_suffix
@@ -113,6 +107,7 @@ class Analysis(object):
         readme_content += "\nderived_from_URI: '{}'".format(
             self.input_dataset.uri
         )
+        readme_content += self.notes
 
         self.output_dataset.put_readme(readme_content)
 
