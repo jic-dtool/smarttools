@@ -1,0 +1,13 @@
+name: trim_seqs_sickle
+docker_base_image: jicscicomp/ubuntu_smarttool_base
+docker_snippet: |
+
+  RUN cd /root && \
+    wget https://github.com/najoshi/sickle/archive/v1.33.tar.gz  && \
+    tar -xzf v1.33.tar.gz  && \
+    cd sickle-1.33  && \
+    make && \
+    mv sickle /usr/local/bin  && \
+    cd /root  && \
+    rm -rf sickle-1.33 && \
+    rm -rf v1.33.tar.gz
