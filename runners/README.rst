@@ -33,7 +33,7 @@ generates SLURM batch scripts for submitting jobs to the cluster.
 
 .. code-block:: yaml
 
-    input_dataset_uri: "irods:///jic_raw_data/rg-matthew-hartley/910d75a1-46f3-4772-8c9d-608f5a266a7f"
+    input_dataset_uri: "irods:/jic_overflow/rg-matthew-hartley/821b259f-b505-4cbc-a28b-1b664b590d46"
     output_dataset_base: "irods:///jic_overflow/rg-matthew-hartley"
     output_dataset_name_suffix: "alignments"
     input_overlay_filter: "is_read1"
@@ -46,7 +46,7 @@ generates SLURM batch scripts for submitting jobs to the cluster.
       #SBATCH -e {stderr}
 
       export BOWTIE2_REFERENCE=/nbi/Research-Groups/JIC/Matthew-Hartley/data_raw/irwin_bait_sequencing/bravo_exome_reference/data/bravo_v2
-      singularity exec /jic/software/testing/align_seqs_bowtie2/0.1.0/align_seqs_bowtie2 python /scripts/smarttool_runner.py -d {input_dataset_uri} -o {output_dataset_uri} -i {identifier}
+      singularity exec /jic/software/testing/smarttools/align_seqs_bowtie2/0.1.0/align_seqs_bowtie2 python /scripts/smarttool_runner.py -d {input_dataset_uri} -o {output_dataset_uri} -i {identifier}
     slurm_freeze_template: |
       #!/bin/bash -e
       #SBATCH --partition=nbi-short
@@ -55,7 +55,7 @@ generates SLURM batch scripts for submitting jobs to the cluster.
       #SBATCH -o {stdout}
       #SBATCH -e {stderr}
 
-      /jic/software/testing/dtool/2.3.2/dtool freeze {output_dataset_uri}
+      /jic/software/testing/dtool/3.2.1/dtool freeze {output_dataset_uri}
 
 The smarttool runner is also responsible for only running the smarttool on the
 dataset items specified by the ``input_overlay_filter``. If the
