@@ -80,3 +80,10 @@ Questions
 - Should we move the dependence on dtool-item-transform into the tools that need them?
 - Should we strip out the building of bioinformatics software as docker images from this repo, i.e. perhaps this repo should know nothing about specific tools?
 - Is it possible to define software using URIs?
+- How can we make make tools pluggable to the system? State that they simply have to provide the interface ``<input dataset URI> <identifier> <output dataset URI>``?
+- At the moment it feels like everything is too couples and like the repository tries to do too many different things
+- Maybe it should be split into a repository for runners; a repository with a helper classes and functions for making it easy to wrap tools to the interface; a JIC repository of tools
+- What is responsible for checking that the analysis of an individual item has been successful?
+- Perhaps nothing about smarttools should be worried about installation instructions for specific tools; perhaps this should be left to individual users/sys admins?
+- What is responsible for defining what backends are accessible; the runner installation? Currently aligners need to be able to access overlays and the pair item which means that they would have to have the same backends configured in them...
+- Perhaps the package with helper functions and classes for wrapping tools could depend on the runner package? That way the backends could be forced to stay in sync...
